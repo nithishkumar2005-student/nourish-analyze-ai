@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ImageUploader } from "@/components/nutrition/ImageUploader";
 import { NutritionDisplay } from "@/components/nutrition/NutritionDisplay";
+import { MealItemsDisplay } from "@/components/nutrition/MealItemsDisplay";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download, Share } from "lucide-react";
@@ -10,74 +11,88 @@ interface AnalyzerSectionProps {
   onBack: () => void;
 }
 
-// Mock nutrition data for demo purposes
-const mockNutritionData = {
-  calories: 425,
-  protein: 28,
-  carbs: 45,
-  fat: 12,
-  fiber: 8,
-  sugar: 6,
-  confidence: 94
-};
+interface FoodItem {
+  name: string;
+  quantity: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+}
+
+interface AnalysisResult {
+  status: string;
+  food: FoodItem[];
+  total: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
+}
 
 export const AnalyzerSection = ({ onBack }: AnalyzerSectionProps) => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [nutritionData, setNutritionData] = useState(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
 
   const handleImageUpload = async (imageFile: File) => {
     setUploadedImage(imageFile);
     setIsAnalyzing(true);
+    setAnalysisResult(null);
     
-    // Simulate API call delay
-    setTimeout(() => {
-      setNutritionData(mockNutritionData);
+    try {
+      const formData = new FormData();
+      formData.append('image', imageFile);
+      
+      const response = await fetch('https://nitishkumar83411.app.n8n.cloud/webhook-test/meal-ai', {
+        method: 'POST',
+        body: formData
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // Handle the response format - it's an array with one object containing "output"
+      if (data && Array.isArray(data) && data[0]?.output) {
+        setAnalysisResult(data[0].output);
+        toast.success("Analysis complete!");
+      } else {
+        throw new Error("Invalid response format");
+      }
+    } catch (error) {
+      console.error("Analysis error:", error);
+      toast.error("Analysis failed. Please try again.");
+    } finally {
       setIsAnalyzing(false);
-      toast.success("Analysis complete!");
-    }, 3000);
-    
-    // In a real app, you would make an API call here:
-    // try {
-    //   const formData = new FormData();
-    //   formData.append('image', imageFile);
-    //   
-    //   const response = await fetch('/api/analyze-nutrition', {
-    //     method: 'POST',
-    //     body: formData
-    //   });
-    //   
-    //   const data = await response.json();
-    //   setNutritionData(data);
-    // } catch (error) {
-    //   toast.error("Analysis failed. Please try again.");
-    // } finally {
-    //   setIsAnalyzing(false);
-    // }
+    }
   };
 
   const handleShare = () => {
-    if (navigator.share && nutritionData) {
+    if (navigator.share && analysisResult) {
       navigator.share({
         title: 'My Meal Analysis',
-        text: `My meal contains ${nutritionData.calories} calories, ${nutritionData.protein}g protein, ${nutritionData.carbs}g carbs, and ${nutritionData.fat}g fat.`,
+        text: `My meal contains ${analysisResult.total.calories} calories, ${analysisResult.total.protein}g protein, ${analysisResult.total.carbs}g carbs, and ${analysisResult.total.fat}g fat.`,
         url: window.location.href
       });
     } else {
       // Fallback for browsers that don't support Web Share API
       navigator.clipboard.writeText(
-        `My meal analysis: ${nutritionData?.calories} calories, ${nutritionData?.protein}g protein, ${nutritionData?.carbs}g carbs, ${nutritionData?.fat}g fat.`
+        `My meal analysis: ${analysisResult?.total.calories} calories, ${analysisResult?.total.protein}g protein, ${analysisResult?.total.carbs}g carbs, ${analysisResult?.total.fat}g fat.`
       );
       toast.success("Results copied to clipboard!");
     }
   };
 
   const handleDownload = () => {
-    if (!nutritionData) return;
+    if (!analysisResult) return;
     
     const data = {
       timestamp: new Date().toISOString(),
-      nutrition: nutritionData,
+      analysis: analysisResult,
       image: uploadedImage?.name || 'meal-photo.jpg'
     };
     
@@ -147,9 +162,18 @@ export const AnalyzerSection = ({ onBack }: AnalyzerSectionProps) => {
               </Card>
             )}
 
-            {nutritionData && !isAnalyzing && (
+            {analysisResult && !isAnalyzing && (
               <div className="space-y-6">
-                <NutritionDisplay data={nutritionData} />
+                <MealItemsDisplay analysisResult={analysisResult} />
+                <NutritionDisplay 
+                  data={{
+                    calories: analysisResult.total.calories,
+                    protein: analysisResult.total.protein,
+                    carbs: analysisResult.total.carbs,
+                    fat: analysisResult.total.fat,
+                    confidence: 95 // Default confidence since API doesn't provide it
+                  }} 
+                />
                 
                 {/* Action Buttons */}
                 <div className="flex gap-3">
@@ -174,7 +198,7 @@ export const AnalyzerSection = ({ onBack }: AnalyzerSectionProps) => {
               </div>
             )}
 
-            {!nutritionData && !isAnalyzing && (
+            {!analysisResult && !isAnalyzing && (
               <Card className="p-8 text-center shadow-card">
                 <div className="space-y-4">
                   <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto">
