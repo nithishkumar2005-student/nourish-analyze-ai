@@ -2,41 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Smart Nutrition AI Design System - Health & Wellness Theme
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Core Colors */
+    --background: 120 20% 98%;
+    --foreground: 240 10% 8%;
 
+    /* Card System */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 8%;
 
+    /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 240 10% 8%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - Health Green */
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 142 86% 45%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - Soft Green */
+    --secondary: 120 40% 95%;
+    --secondary-foreground: 142 76% 36%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted */
+    --muted: 120 20% 95%;
+    --muted-foreground: 240 5% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - Fresh Green */
+    --accent: 120 60% 92%;
+    --accent-foreground: 142 76% 30%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Nutrition Colors */
+    --nutrition-protein: 25 95% 53%;
+    --nutrition-carbs: 220 91% 60%;
+    --nutrition-fat: 340 82% 52%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Status Colors */
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --radius: 0.5rem;
+    /* Interactive */
+    --border: 120 30% 88%;
+    --input: 120 30% 88%;
+    --ring: 142 76% 36%;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 86% 45%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(120 40% 98%));
+    --gradient-nutrition: linear-gradient(90deg, hsl(25 95% 53%), hsl(220 91% 60%), hsl(340 82% 52%));
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(142 76% 36% / 0.1);
+    --shadow-card: 0 10px 40px -10px hsl(142 76% 36% / 0.15);
+    --shadow-glow: 0 0 30px hsl(142 86% 45% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -56,33 +87,48 @@ All colors MUST be HSL.
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Core Colors - Dark Mode */
+    --background: 240 10% 4%;
+    --foreground: 120 20% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    /* Card System */
+    --card: 240 10% 6%;
+    --card-foreground: 120 20% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    /* Popover */
+    --popover: 240 10% 6%;
+    --popover-foreground: 120 20% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    /* Primary - Bright Green for Dark */
+    --primary: 142 86% 45%;
+    --primary-foreground: 240 10% 4%;
+    --primary-glow: 142 96% 55%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary */
+    --secondary: 240 10% 12%;
+    --secondary-foreground: 142 86% 45%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Muted */
+    --muted: 240 10% 12%;
+    --muted-foreground: 240 5% 55%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Accent */
+    --accent: 240 10% 15%;
+    --accent-foreground: 142 86% 45%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    /* Interactive */
+    --border: 240 10% 15%;
+    --input: 240 10% 15%;
+    --ring: 142 86% 45%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* Gradients - Dark */
+    --gradient-hero: linear-gradient(135deg, hsl(142 86% 45%), hsl(142 96% 55%));
+    --gradient-card: linear-gradient(145deg, hsl(240 10% 6%), hsl(240 10% 8%));
+
+    /* Shadows - Glowing for Dark */
+    --shadow-soft: 0 4px 20px -4px hsl(142 86% 45% / 0.2);
+    --shadow-card: 0 10px 40px -10px hsl(142 86% 45% / 0.25);
+    --shadow-glow: 0 0 40px hsl(142 96% 55% / 0.4);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -101,5 +147,93 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Custom utility classes */
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-bounce {
+    transition: var(--transition-bounce);
+  }
+
+  /* Nutrition color utilities */
+  .text-protein {
+    color: hsl(var(--nutrition-protein));
+  }
+
+  .text-carbs {
+    color: hsl(var(--nutrition-carbs));
+  }
+
+  .text-fat {
+    color: hsl(var(--nutrition-fat));
+  }
+
+  .bg-protein {
+    background-color: hsl(var(--nutrition-protein));
+  }
+
+  .bg-carbs {
+    background-color: hsl(var(--nutrition-carbs));
+  }
+
+  .bg-fat {
+    background-color: hsl(var(--nutrition-fat));
+  }
+
+  /* Floating animation for 3D elements */
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .float-delayed {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  /* Pulse glow effect */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse-glow {
+    from {
+      box-shadow: var(--shadow-soft);
+    }
+    to {
+      box-shadow: var(--shadow-glow);
+    }
   }
 }
