@@ -103,6 +103,17 @@ All colors MUST be HSL.
     --primary: 142 86% 45%;
     --primary-foreground: 240 10% 4%;
     --primary-glow: 142 96% 55%;
+    
+    /* Nutrition Colors - Dark Mode */
+    --nutrition-protein: 25 95% 63%;
+    --nutrition-carbs: 220 91% 70%;
+    --nutrition-fat: 340 82% 62%;
+    
+    /* Status Colors - Dark Mode */
+    --success: 142 86% 45%;
+    --warning: 38 92% 60%;
+    --destructive: 0 84% 70%;
+    --destructive-foreground: 240 10% 4%;
 
     /* Secondary */
     --secondary: 240 10% 12%;
